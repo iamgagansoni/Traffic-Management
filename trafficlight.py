@@ -18,7 +18,7 @@ def dete():
     return li,li1
 
 
-def greensig(li,li1):
+def greensig(li,li1,j,route):
     timer=0
     for i in range(len(li)):
         if i==0 or i==2 or i==4:                    #Setting timer for green Light
@@ -27,19 +27,30 @@ def greensig(li,li1):
         else:
             timer+=li[i]*li1[i]
     timer=int(timer)
-    while timer:
+    if timer<10:
+        timer=15
+    while timer>=0:
         mins,secs=divmod(timer,60)
         t='{:02d}:{:02d}'.format(mins,secs)         
         print(t,end='\r')
         time.sleep(1)                                           #Timer Countdown
         timer-=1
-
+        if timer == 10:
+            try:
+                print("Clicking picture of ",route[j+1])
+                li,li1=dete()
+                return li,li1
+            except:
+                pass
+        
 
 k=1
 
-
 while k:
-    li,li1=dete()
-    greensig(li,li1)                                                        #Function Calling
-    k=int(input("Press 0 to exit \nPress 1 to continue\t"))    
-    
+    route=["route_1","route_2","route_3","route_4"]
+    for i in range(len(route)):
+        if i==0:
+            print("Clicking picture of ",route[i])
+            li,li1=dete()
+        li,li1=greensig(li,li1,i,route)                                                        #Function Calling
+    k=int(input("Press 0 to exit \nPress 1 to continue\t"))
